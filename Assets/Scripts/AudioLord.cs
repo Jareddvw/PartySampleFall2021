@@ -32,8 +32,11 @@ public class AudioLord : MonoBehaviour
     public static GameObject singletonRoot;
     private static AudioSource bgm;
 
-    public static void AudioPlay()
-    {
-
+    public static void PlaySFX(AudioClip sfx, Vector3 pos) {
+        GameObject go = new GameObject();
+        go.transform.parent = Instance.transform;
+        var src = go.AddComponent<AudioSource>();
+        src.PlayOneShot(sfx);
+        Destroy(go, sfx.length + .01f);
     }
 }
