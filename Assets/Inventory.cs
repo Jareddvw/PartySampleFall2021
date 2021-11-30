@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    public Shooter shooter;
     public BasicVehicleMotor basicVehicle;
     public MoneyGrab moneyGrab;
     public Image[] itemUI;
@@ -33,12 +34,35 @@ public class Inventory : MonoBehaviour
 
     public void Click(int key)
     {
-        if (currentItems[key] == null)
-            return;
-        if(moneyGrab.PayMoney(currentItems[key].cost))
+        currentItems[key].OnActivate();    
+    }
+
+    public bool Equip(Item item)
+    {
+        if (currentItems.Count <= 4)
         {
-            Debug.Log("buy: " + currentItems[key]);
-            currentItems[key].OnActivate();
-        }          
+            currentItems.Add(item);
+            return true;
+        }
+        return false;
+    }
+
+    public bool CanEquip(Weapon wep)
+    {
+        if (shooter.primaryWeapon == null) {
+            return true;
+        }
+        else if (shooter.secondaryWeapon == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public void Equip(Weapon wep)
+    {
+        if (shooter.primaryWeapon == null)      
+            shooter.primaryWeapon = wep;
+        else if (shooter.secondaryWeapon == null)       
+            shooter.secondaryWeapon = wep;
     }
 }
