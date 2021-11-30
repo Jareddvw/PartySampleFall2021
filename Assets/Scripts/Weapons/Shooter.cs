@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
+    public Weapon primaryWeapon;
+    public Weapon secondaryWeapon;
+
     public Transform firePoint;
     public GameObject bulletPrefab;
     public KeyCode fire;
+    public KeyCode fire1;
 
     public Transform cursor;
 
@@ -15,7 +19,6 @@ public class Shooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
         if (cursor) cursor.position = mousePosition;
@@ -24,9 +27,22 @@ public class Shooter : MonoBehaviour
         if (Input.GetKey(fire)){
             Shoot();
         }
+        if (Input.GetKey(fire1))
+        {
+            ShootAlternate();
+        }
     }
 
     void Shoot(){
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        if (primaryWeapon == null)
+            return;
+        primaryWeapon.Shoot(firePoint);
+    }
+
+    void ShootAlternate()
+    {
+        if (secondaryWeapon == null)
+            return;
+        secondaryWeapon.Shoot(firePoint);
     }
 }

@@ -11,11 +11,6 @@ public class ComboMeter : MonoBehaviour
     public int killCount;
     public Text comboText;
 
-    void Awake()
-    {
-        comboText.enabled = false;
-    }
-
     // Update is called once per frame
     void Update()
     {
