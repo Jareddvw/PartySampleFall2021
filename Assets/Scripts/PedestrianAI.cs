@@ -13,6 +13,7 @@ public class PedestrianAI : MonoBehaviour {
 	public Rigidbody2D rigidbody;
 	public SimpleWalk walk;
 	public HealthScript health;
+	public CrimeManager crimeManager;
 
 	public bool dead;
 	public bool runaway;
@@ -41,6 +42,11 @@ public class PedestrianAI : MonoBehaviour {
 		if (sprite) {
 			originalColor = sprite.color;
 		}
+
+		if (!crimeManager) crimeManager = GetComponent<CrimeManager>();
+		if (crimeManager) {
+			crimeManager.onCrimeHappen += Frighten;
+		}
 	}
 
 	public void Update() {
@@ -64,11 +70,11 @@ public class PedestrianAI : MonoBehaviour {
 	}
 
 	public void OnHit(Vector3 dir, Transform from) {
-		Frighten(from);
 		bloodPlayer.Play();
+		Frighten(dir, from);
 	}
 
-	public void Frighten(Transform from) {
+	public void Frighten(Vector3 dir, Transform from) {
 		runaway = true;
 		this.from = from;
 		walk.enabled = false;

@@ -5148,6 +5148,8 @@ GameObject:
   - component: {fileID: 7762796765041121646}
   - component: {fileID: 1553572956}
   - component: {fileID: -7979658078120930242}
+  - component: {fileID: 5625798824492432785}
+  - component: {fileID: 4791267457171623723}
   m_Layer: 0
   m_Name: PoliceVehicle
   m_TagString: Untagged
@@ -5205,6 +5207,7 @@ MonoBehaviour:
   trail: {fileID: 0}
   rotation: 0
   isBoosting: 0
+  boostManager: {fileID: 0}
 --- !u!50 &7762796765041121643
 Rigidbody2D:
   serializedVersion: 4
@@ -5254,6 +5257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b03c4c4ae5b714b97aa46983c86331e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  broadcaster: {fileID: 0}
   dustPlayer: {fileID: 1885195714}
   dustThreshold: 0.9
   motor: {fileID: 7762796765041121640}
@@ -5266,6 +5270,11 @@ MonoBehaviour:
   player: {fileID: 0}
   chaseDist: 6.5
   stopDist: 25
+  detectDist: 15
+  dmgMinInterval: 0.5
+  minSpeedToDmg: 1
+  minSmashDmg: 25
+  maxSmashDmg: 120
 --- !u!114 &-7979658078120930242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5284,6 +5293,31 @@ MonoBehaviour:
   destroyOnDeath: 1
   destroyDelay: 0
   destroyRecord: 0
+--- !u!114 &5625798824492432785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7762796765041121637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec665e75efa4b4299a2d4a2733d7890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4791267457171623723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7762796765041121637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcdd9fe59686644a1abdfb53c836e370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 10
 --- !u!1 &7762796765123994335
 GameObject:
   m_ObjectHideFlags: 0

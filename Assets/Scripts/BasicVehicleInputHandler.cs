@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BasicVehicleInputHandler : MonoBehaviour {
 
+	public ComboMeter comboMeter;
 	public float dmgMinInterval = .1f;
 	public float minSpeedToDmg = 1f;
 	public int minSmashDmg = 10;
@@ -11,6 +12,7 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 	public float dustThreshold = .9f;
 
 	public ParticleSystem dustPlayer;
+	public CrimeBroadcast broadcaster;
 	public BasicVehicleMotor motor;
 	public Transform frame;
 	public Transform[] wheels;
@@ -23,6 +25,8 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 	private void Awake() {
 		_rigidbody = GetComponent<Rigidbody2D>();
 		if (motor == null) motor = GetComponent<BasicVehicleMotor>();
+		if (comboMeter == null) comboMeter = GetComponent<ComboMeter>();
+		if (broadcaster == null) broadcaster = GetComponent<CrimeBroadcast>();
 	}
 
 	private void Update() {
@@ -64,21 +68,26 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 
 	private void Hit(Collision2D other) {
 		if (!other.collider.TryGetComponent<HealthScript>(out var health)) return;
-		
+		// Debug.Log("hit");
 		var id = health.GetInstanceID();
 		if (_dmgInfo.ContainsKey(id) && (Time.timeSinceLevelLoad - _dmgInfo[id]) < dmgMinInterval) return;
 		_dmgInfo[id] = Time.timeSinceLevelLoad;
 		var contact = other.GetContact(0);
-		// var dir = (contact.point - (Vector2) transform.position).normalized;
+		var dir = ((Vector2) transform.position - contact.point).normalized;
 		// var vel = _rigidbody.velocity;
 		var vel = contact.relativeVelocity;
-		// var spd = Vector3.Dot(vel, dir);
-		var spd = vel.magnitude;
+		var spd = Vector3.Dot(vel, dir);
+		// var spd = vel.magnitude;
 		// print(other.collider.name + " SPD " + spd.ToString("F3"));
 		if (spd < minSpeedToDmg) return;
 		var dmg = Mathf.Lerp(minSmashDmg, maxSmashDmg, (spd - minSpeedToDmg) / (motor.maxBoostSpeed - minSpeedToDmg));
 		// print("DMG " + dmg);
 		health.OnDamageTaken((int) dmg, vel.normalized, transform);
+		broadcaster?.Broadcast();
+		if(health.hp <= 0)
+        {
+			comboMeter?.OnKill();
+        }
 	}
 
 	public void MakeDust() {
