@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class Shop : MonoBehaviour
 {
     public KeyCode shopButton;
+    public int UpgradeDamageCost;
+    public int UpgradeAttackSpeedCost;
+    public Shooter shooter;
     public MoneyGrab mg;
     public Inventory inv;
     public Canvas shopCanvas;
@@ -21,6 +24,28 @@ public class Shop : MonoBehaviour
             else
                 ExitStore();
         }
+    }
+
+    public void UpgradeDamage()
+    {
+        if (!mg.CanPayMoney(UpgradeDamageCost))
+            return;
+        mg.PayMoney(UpgradeDamageCost);
+        if(shooter.primaryWeapon)
+            shooter.primaryWeapon.ChangeWeaponDamage(10);
+        if(shooter.secondaryWeapon)
+            shooter.secondaryWeapon.ChangeWeaponDamage(10);
+    }
+
+    public void UpgradeAttackSpeed()
+    {
+        if (!mg.CanPayMoney(UpgradeAttackSpeedCost))
+            return;
+        mg.PayMoney(UpgradeAttackSpeedCost);
+        if (shooter.primaryWeapon)
+            shooter.primaryWeapon.ChangeWeaponAttackSpeed(0.1f);
+        if(shooter.secondaryWeapon)
+            shooter.secondaryWeapon.ChangeWeaponAttackSpeed(0.1f);
     }
 
     public void EnterStore()

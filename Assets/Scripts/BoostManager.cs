@@ -75,11 +75,10 @@ public class BoostManager : MonoBehaviour
 
     public IEnumerator boostCooldown(int seconds)
     {
-        fill.color = disabledColor;
         boostRechargeRate = boostRechargeRateDisabled;
         yield return new WaitForSeconds(seconds);
         boostRechargeRate = boostRechargeRateNormal;
-        fill.color = fillColor;
+    
         canBoost = true;
     }
 }

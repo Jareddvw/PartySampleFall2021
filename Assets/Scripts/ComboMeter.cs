@@ -9,7 +9,6 @@ public class ComboMeter : MonoBehaviour
     public float onKillTimeReward = 5f;
     public bool onCombo;
     public int killCount;
-    public Text comboText;
 
     // Update is called once per frame
     void Update()
@@ -20,7 +19,6 @@ public class ComboMeter : MonoBehaviour
                 timeRemaining -= Time.deltaTime;
             else
             {
-                comboText.enabled = false;
                 Debug.Log("Time has run out!");
                 timeRemaining = 0;
                 onCombo = false;
@@ -33,8 +31,6 @@ public class ComboMeter : MonoBehaviour
     {
         onCombo = true;
         timeRemaining += onKillTimeReward;
-        comboText.enabled = true;
-        comboText.text = killCount.ToString();
         killCount += 1;
     }
 

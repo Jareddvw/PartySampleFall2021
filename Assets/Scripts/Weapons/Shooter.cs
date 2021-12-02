@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class Shooter : MonoBehaviour
 {
     public Weapon primaryWeapon;
     public Weapon secondaryWeapon;
-
+    public TextMeshProUGUI primartext;
+    public TextMeshProUGUI secondartext;
     public Transform firePoint;
     public GameObject bulletPrefab;
     public KeyCode fire;
@@ -44,5 +45,19 @@ public class Shooter : MonoBehaviour
         if (secondaryWeapon == null)
             return;
         secondaryWeapon.Shoot(firePoint);
+    }
+
+
+    public void unequipPrimary()
+    {
+        primaryWeapon = null;
+        primartext.text = string.Empty;
+
+    }
+
+    public void unequipSecondary()
+    {
+        secondaryWeapon = null;
+        secondartext.text = string.Empty;
     }
 }
