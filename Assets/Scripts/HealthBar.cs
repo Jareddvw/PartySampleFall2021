@@ -13,16 +13,13 @@ public class HealthBar : MonoBehaviour
 
     private void Awake()
     {
-        canvas = GetComponent<Canvas>();
         //canvasScaler = GetComponent<CanvasScaler>();
         //canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         hpImage = GetComponent<Image>();
-        fullHpImage = GetComponent<Image>();
-        healthScript = GetComponent<HealthScript>();
         hp = healthScript.hp;
         maxHP = healthScript.maxHP;
         hpImage.type = Image.Type.Filled;
-        hpImage.fillAmount = (float) hp / maxHP;
+        hpImage.fillAmount = Mathf.Clamp01((float) hp / maxHP);
     }
 
     private void Update()
@@ -30,7 +27,6 @@ public class HealthBar : MonoBehaviour
         if (hp == healthScript.hp && maxHP == healthScript.maxHP) return;
         hp = healthScript.hp;
         maxHP = healthScript.maxHP;
-        hpImage.fillAmount = (float) hp / maxHP;
-
+        hpImage.fillAmount = Mathf.Clamp01((float) hp / maxHP);
     }
 }
