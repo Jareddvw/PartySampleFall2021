@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &410675134
 Transform:
   m_ObjectHideFlags: 0
@@ -4982,17 +4982,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90a76680c4f44cc6a8510504aab59d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitSfx:
+  - {fileID: 8300000, guid: 6a8fa627635ab4c8e805f44307be7012, type: 3}
+  - {fileID: 8300000, guid: 2ad85a050537a46bbaeb9ea712d7296f, type: 3}
+  - {fileID: 8300000, guid: 86a9d87e482a84e46b37bf304a534f6a, type: 3}
+  - {fileID: 8300000, guid: febcb7caa1cbf4601b62c70d01014098, type: 3}
+  - {fileID: 8300000, guid: 97ed17f35554f4010baf7177fa5679bc, type: 3}
+  - {fileID: 8300000, guid: 906fd2ca0e68a413ca3ca05589b29c83, type: 3}
+  - {fileID: 8300000, guid: 559836b7c2b304d7890a576d2f0727e8, type: 3}
+  deathSfx:
+  - {fileID: 8300000, guid: bfe12bf3a5e7a4a9eafdf6484e30794c, type: 3}
+  - {fileID: 8300000, guid: 871f24ea86ee24923ac69eef9600fce3, type: 3}
+  - {fileID: 8300000, guid: 7736bc36394894b3cab497fdfba08366, type: 3}
+  yellChance: 1
   decisionInterval: 0.1
   runawaySpeed: 3
   calmDistance: 25
   rigidbody: {fileID: 0}
   walk: {fileID: 0}
   health: {fileID: 0}
+  crimeManager: {fileID: 0}
   dead: 0
   runaway: 0
   from: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   lastDecisionTime: 0
+  bloodSplash: {fileID: 1393325954786293817, guid: c42241a6b4aba43919142459421636aa,
+    type: 3}
   bloodPlayer: {fileID: 410675136}
   sprite: {fileID: 7908964624889990770}
   originalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -5027,7 +5043,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
   m_Mass: 0.28274336
-  m_LinearDrag: 1
+  m_LinearDrag: 0.7
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}

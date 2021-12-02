@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PedestrianAI : MonoBehaviour {
+
+	public AudioClip[] hitSfx;
+	public AudioClip[] deathSfx;
 
 	public float decisionInterval = .5f;
 	public float runawaySpeed = 5f;
@@ -21,6 +25,7 @@ public class PedestrianAI : MonoBehaviour {
 	public Vector3 direction;
 	public float lastDecisionTime;
 
+	public GameObject bloodSplash;
 	public ParticleSystem bloodPlayer;
 	public SpriteRenderer sprite;
 	public Color originalColor;
@@ -34,7 +39,8 @@ public class PedestrianAI : MonoBehaviour {
 		if (health) {
 			health.onDmgAction += OnHit;
 			health.onDeathAction += (dir, tf) => {
-				rigidbody.velocity = dir * 2;
+				rigidbody.velocity = Vector2.zero;
+				walk.enabled = false;
 				if (corpse) Instantiate(corpse, transform.position, Quaternion.identity);
 			};
 		}
@@ -50,7 +56,9 @@ public class PedestrianAI : MonoBehaviour {
 	}
 
 	public void Update() {
-		if (dead || !runaway || !from) return;
+		if (dead || !runaway || !from) {
+			return;
+		}
 		
 		var disp = transform.position - from.position;
 		var dist = disp.magnitude;
@@ -70,7 +78,10 @@ public class PedestrianAI : MonoBehaviour {
 	}
 
 	public void OnHit(Vector3 dir, Transform from) {
-		bloodPlayer.Play();
+		// Debug.Log(transform.position.ToString("F3"));
+		// bloodPlayer.Play();
+		PlayBloodSplash(transform.position);
+		PlayHitSfx();
 		Frighten(dir, from);
 	}
 
@@ -81,5 +92,19 @@ public class PedestrianAI : MonoBehaviour {
 		direction = (transform.position - from.position).normalized;
 		lastDecisionTime = Time.timeSinceLevelLoad;
 		if (sprite) sprite.color = panicColor;
+	}
+
+	public void PlayBloodSplash(Vector3 position) {
+		if (!bloodSplash) return;
+		GameObject splash = Instantiate(bloodSplash);
+		splash.transform.position = position;
+		splash.GetComponent<ParticleSystem>()?.Play();
+	}
+
+	public void PlayHitSfx() {
+		if (hitSfx.Length == 0 || deathSfx.Length == 0) return;
+		var sfx = hitSfx[0];
+		sfx = health.hp <= 0 ? deathSfx[Random.Range(0, deathSfx.Length)] : hitSfx[Random.Range(0, hitSfx.Length)];
+		AudioManager.PlaySFX(sfx, transform.position);
 	}
 }

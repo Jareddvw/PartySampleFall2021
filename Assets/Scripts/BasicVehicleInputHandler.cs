@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BasicVehicleInputHandler : MonoBehaviour {
 
@@ -11,6 +12,11 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 	public int maxSmashDmg = 100;
 	public float dustThreshold = .9f;
 
+	public AudioClip[] hitSfx;
+	public AudioClip[] explosionSfx;
+	public GameObject explosionVfx;
+
+	public HealthScript health;
 	public ParticleSystem dustPlayer;
 	public CrimeBroadcast broadcaster;
 	public BasicVehicleMotor motor;
@@ -24,6 +30,7 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 
 	private void Awake() {
 		_rigidbody = GetComponent<Rigidbody2D>();
+		health = GetComponent<HealthScript>();
 		if (motor == null) motor = GetComponent<BasicVehicleMotor>();
 		if (comboMeter == null) comboMeter = GetComponent<ComboMeter>();
 		if (broadcaster == null) broadcaster = GetComponent<CrimeBroadcast>();
@@ -73,12 +80,15 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 		if (_dmgInfo.ContainsKey(id) && (Time.timeSinceLevelLoad - _dmgInfo[id]) < dmgMinInterval) return;
 		_dmgInfo[id] = Time.timeSinceLevelLoad;
 		var contact = other.GetContact(0);
-		var dir = ((Vector2) transform.position - contact.point).normalized;
+		// var dir = ((Vector2) transform.position - contact.point).normalized;
+		var dir = -_rigidbody.velocity.normalized;
 		// var vel = _rigidbody.velocity;
 		var vel = contact.relativeVelocity;
 		var spd = Vector3.Dot(vel, dir);
 		// var spd = vel.magnitude;
 		// print(other.collider.name + " SPD " + spd.ToString("F3"));
+		// print("RVEL " + vel);
+		// print("DIR " + dir);
 		if (spd < minSpeedToDmg) return;
 		var dmg = Mathf.Lerp(minSmashDmg, maxSmashDmg, (spd - minSpeedToDmg) / (motor.maxBoostSpeed - minSpeedToDmg));
 		// print("DMG " + dmg);
@@ -88,6 +98,10 @@ public class BasicVehicleInputHandler : MonoBehaviour {
         {
 			comboMeter?.OnKill();
         }
+	}
+
+	private void OnHit(Vector3 dir, Transform tra) {
+		PlayHitSfx();
 	}
 
 	public void MakeDust() {
@@ -111,4 +125,18 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 	// private void OnTriggerEnter2D(Collider2D other) => Hit(other);
 
 	// private void OnTriggerStay2D(Collider2D other) => Hit(other);
+
+	public void PlayHitSfx() {
+		if (hitSfx.Length == 0 || explosionSfx.Length == 0) return;
+		var sfx = hitSfx[0];
+		sfx = health.hp <= 0 ? explosionSfx[Random.Range(0, explosionSfx.Length)] : hitSfx[Random.Range(0, hitSfx.Length)];
+		AudioManager.PlaySFX(sfx, transform.position);
+	}
+
+	public void PlayExplosionVfx() {
+		if (explosionVfx) {
+			var explosion = Instantiate(explosionVfx);
+			explosion.transform.position = transform.position;
+		}
+	}
 }

@@ -7,36 +7,37 @@ using UnityEngine;
 public class AudioLord : MonoBehaviour
 {
     public AudioClip music;
-    private void Awake()
-    {
-        Instance.clip = music;
-        Instance.Play();
-        Instance.loop = true;
-    }
 
-    public static AudioSource Instance
+    public static AudioLord Instance
     {
         get
         {
-            if (!bgm)
+            if (!_instance)
             {
-                GameObject audioLord = new GameObject("audioLord");
-                bgm = audioLord.AddComponent<AudioSource>();
-                DontDestroyOnLoad(audioLord);
+                singletonRoot = new GameObject("audioLord");
+                _source = singletonRoot.AddComponent<AudioSource>();
+                _instance = singletonRoot.AddComponent<AudioLord>();
+                DontDestroyOnLoad(singletonRoot);
+                inited = true;
             }
 
-            return bgm;
+            return _instance;
         }
     }
 
     public static GameObject singletonRoot;
-    private static AudioSource bgm;
-
-    public static void PlaySFX(AudioClip sfx, Vector3 pos) {
-        GameObject go = new GameObject();
-        go.transform.parent = Instance.transform;
-        var src = go.AddComponent<AudioSource>();
-        src.PlayOneShot(sfx);
-        Destroy(go, sfx.length + .01f);
+    private static bool inited = false;
+    private static AudioLord _instance;
+    private static AudioSource _source;
+    
+    private void Awake() {
+        if (inited) DestroyImmediate(gameObject);
+        if (!_instance) _instance = this;
+        singletonRoot = gameObject;
+        _source.clip = music;
+        _source.Play();
+        _source.loop = true;
+        inited = true;
+        DontDestroyOnLoad(gameObject);
     }
 }

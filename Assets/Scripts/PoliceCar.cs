@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 public class PoliceCar : MonoBehaviour {
 
+	public AudioClip[] hitSfx;
+	public AudioClip[] explosionSfx;
+	public GameObject explosionVfx;
+
+	public AudioClip sirenSFX;
+	public AudioSource siren;
+	public HealthScript health;
 	public CrimeBroadcast broadcaster;
     public ParticleSystem dustPlayer;
     public float dustThreshold = .9f;
@@ -25,14 +32,24 @@ public class PoliceCar : MonoBehaviour {
     private Dictionary<int, float> _dmgInfo = new Dictionary<int, float>();
     private List<int> _tempList = new List<int>();
 
+    private Rigidbody2D _rigidbody;
 	private CrimeManager crimeManager;
 	private bool alerted;
 
     private void Awake() {
+	    _rigidbody = GetComponent<Rigidbody2D>();
         if (motor == null) motor = GetComponent<BasicVehicleMotor>();
 		crimeManager = GetComponent<CrimeManager>();
+		if (!health) health = GetComponent<HealthScript>();
+		if (health) {
+			health.onDmgAction += OnHit;
+			health.onDeathAction += (vector3, transform1) => PlayExplosionVfx();
+		}
 		if (crimeManager) crimeManager.onCrimeHappen += UpdateCrime;
 		if (broadcaster == null) broadcaster = GetComponent<CrimeBroadcast>();
+		siren = GetComponent<AudioSource>();
+		siren.loop = true;
+		siren.clip = sirenSFX;
     }
 
     private void Update() {
@@ -50,6 +67,7 @@ public class PoliceCar : MonoBehaviour {
         if (dist > stopDist)
        	{
 			alerted = false;
+			siren.Stop();
             motor.accelerationInput = 0;
             motor.boostInput = 0;
         } else if (chaseDist < dist && dist <= stopDist)
@@ -80,7 +98,9 @@ public class PoliceCar : MonoBehaviour {
         UpdateDmgInfo();
     }
 
-	private void UpdateCrime(Vector3 dir, Transform transform) {
+	private void UpdateCrime(Vector3 dir, Transform tra) {
+		if (alerted) return;
+		if (siren.clip) siren.Play();
 		alerted = true;
 		return;
 		Vector3 direction = player.position - transform.position;
@@ -119,6 +139,7 @@ public class PoliceCar : MonoBehaviour {
     }
     
     private void Hit(Collision2D other) {
+	    /*
         if (!other.collider.TryGetComponent<HealthScript>(out var health)) return;
 		
         var id = health.GetInstanceID();
@@ -136,9 +157,50 @@ public class PoliceCar : MonoBehaviour {
         // print("DMG " + dmg);
         health.OnDamageTaken((int) dmg, vel.normalized, transform);
         broadcaster?.Broadcast();
+        */
+        
+        if (!other.collider.TryGetComponent<HealthScript>(out var health)) return;
+        // Debug.Log("hit");
+        var id = health.GetInstanceID();
+        if (_dmgInfo.ContainsKey(id) && (Time.timeSinceLevelLoad - _dmgInfo[id]) < dmgMinInterval) return;
+        _dmgInfo[id] = Time.timeSinceLevelLoad;
+        var contact = other.GetContact(0);
+        // var dir = ((Vector2) transform.position - contact.point).normalized;
+        var dir = -_rigidbody.velocity.normalized;
+        // var vel = _rigidbody.velocity;
+        var vel = contact.relativeVelocity;
+        var spd = Vector3.Dot(vel, dir);
+        // var spd = vel.magnitude;
+        // print(other.collider.name + " SPD " + spd.ToString("F3"));
+        // print("RVEL " + vel);
+        // print("DIR " + dir);
+        if (spd < minSpeedToDmg) return;
+        var dmg = Mathf.Lerp(minSmashDmg, maxSmashDmg, (spd - minSpeedToDmg) / (motor.maxBoostSpeed - minSpeedToDmg));
+        // print("DMG " + dmg);
+        health.OnDamageTaken((int) dmg, vel.normalized, transform);
+        broadcaster?.Broadcast();
     }
     
     private void OnCollisionEnter2D(Collision2D other) => Hit(other);
 	
     private void OnCollisionStay2D(Collision2D other) => Hit(other);
+
+    public void OnHit(Vector3 dir, Transform tra) {
+	    PlayHitSfx();
+	    UpdateCrime(dir, tra);
+    }
+    
+    public void PlayHitSfx() {
+	    if (hitSfx.Length == 0 || explosionSfx.Length == 0) return;
+	    var sfx = hitSfx[0];
+	    sfx = health.hp <= 0 ? explosionSfx[Random.Range(0, explosionSfx.Length)] : hitSfx[Random.Range(0, hitSfx.Length)];
+	    AudioManager.PlaySFX(sfx, transform.position);
+    }
+
+    public void PlayExplosionVfx() {
+	    if (explosionVfx) {
+		    var explosion = Instantiate(explosionVfx);
+		    explosion.transform.position = transform.position;
+	    }
+    }
 }
