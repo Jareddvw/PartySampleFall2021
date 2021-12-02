@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
+    public CrimeBroadcast cb;
     public float lifetime = 3f;
     public float bulletSpeed = 20f;
+    public int damage;
     public Rigidbody2D rb;
     //public Vector2 direction = gunner.rotation;
 
@@ -13,5 +15,18 @@ public class Bullet : MonoBehaviour {
     void Awake() {
         rb.velocity = transform.up  * bulletSpeed;
         Destroy(gameObject, lifetime);
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+            return;
+        if (collision.GetComponent<HealthScript>())
+        {
+            cb = FindObjectOfType<CrimeBroadcast>();
+            cb.Broadcast();
+            collision.GetComponent<HealthScript>().OnDamageTaken(damage, transform.forward, transform);
+            Destroy(this.gameObject);
+        }
     }
 }

@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Missile : MonoBehaviour
+public class Missile : Weapon
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Shoot(Transform start)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        fireTime -= Time.deltaTime;
+        if (fireTime <= 0)
+        {
+            fireTime = fireRate;
+            Debug.Log("rocket shoot");
+            Instantiate(bulletPrefab, start.position, start.rotation);
+        }
     }
 }

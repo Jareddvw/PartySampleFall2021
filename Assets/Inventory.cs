@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Inventory : MonoBehaviour
 {
     public Shooter shooter;
+    public TextMeshProUGUI primary;
+    public TextMeshProUGUI secondary;
     public BasicVehicleMotor basicVehicle;
     public MoneyGrab moneyGrab;
     public Image[] itemUI;
@@ -60,9 +63,14 @@ public class Inventory : MonoBehaviour
 
     public void Equip(Weapon wep)
     {
-        if (shooter.primaryWeapon == null)      
+        if (shooter.primaryWeapon == null) {
             shooter.primaryWeapon = wep;
-        else if (shooter.secondaryWeapon == null)       
+            primary.text = wep.name;
+        }
+        else if (shooter.secondaryWeapon == null)
+        {
             shooter.secondaryWeapon = wep;
+            secondary.text = wep.name;
+        }
     }
 }
