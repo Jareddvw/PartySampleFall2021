@@ -9,7 +9,9 @@ public class PedestrianAI : MonoBehaviour {
 
 	public AudioClip[] hitSfx;
 	public AudioClip[] deathSfx;
+	public GameObject moneyPrefab;
 
+	public int moneyAmount = 1;
 	public float decisionInterval = .5f;
 	public float runawaySpeed = 5f;
 	public float calmDistance = 15f;
@@ -42,6 +44,8 @@ public class PedestrianAI : MonoBehaviour {
 				rigidbody.velocity = Vector2.zero;
 				walk.enabled = false;
 				if (corpse) Instantiate(corpse, transform.position, Quaternion.identity);
+				SpawnMoney();
+				DeathCount.CountOne();
 			};
 		}
 
@@ -106,5 +110,11 @@ public class PedestrianAI : MonoBehaviour {
 		var sfx = hitSfx[0];
 		sfx = health.hp <= 0 ? deathSfx[Random.Range(0, deathSfx.Length)] : hitSfx[Random.Range(0, hitSfx.Length)];
 		AudioManager.PlaySFX(sfx, transform.position);
+	}
+	
+	private void SpawnMoney() {
+		if (!moneyPrefab) return;
+		var amount = Random.Range(0, moneyAmount + 1);
+		for(int i=0; i < amount; i++) Instantiate(moneyPrefab, transform.position + new Vector3(Random.Range(-2.5f,2.5f), Random.Range(-2.5f, 2.5f), 0), moneyPrefab.transform.rotation);
 	}
 }

@@ -11,8 +11,9 @@ public class Pistol : Weapon
         if (fireTime <= 0)
         {
             fireTime = fireRate;
-            Debug.Log("pistol shoot");
-            Instantiate(bulletPrefab, start.position, start.rotation);
+            // Debug.Log("pistol shoot");
+            var b = Instantiate(bulletPrefab, start.position, start.rotation);
+            b.GetComponent<Bullet>().cb = cb;
         }
     }
 }

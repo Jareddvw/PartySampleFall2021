@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 public class MoneyUI : MonoBehaviour
@@ -8,17 +9,15 @@ public class MoneyUI : MonoBehaviour
 
     private void Awake()
     {
-        moneyDisplay = GetComponent<Text>();
-        money = GetComponent<MoneyGrab>();
         bal = money.bal;
-        moneyDisplay.text = bal.ToString();
+        moneyDisplay.text = "$ " + bal;
     }
 
     private void Update()
     {
         if (bal == money.bal) return;
         bal = money.bal;
-        moneyDisplay.text = bal.ToString();
+        moneyDisplay.text = "$ " + bal;
 
     }
 }

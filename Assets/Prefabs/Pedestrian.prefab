@@ -4994,7 +4994,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bfe12bf3a5e7a4a9eafdf6484e30794c, type: 3}
   - {fileID: 8300000, guid: 871f24ea86ee24923ac69eef9600fce3, type: 3}
   - {fileID: 8300000, guid: 7736bc36394894b3cab497fdfba08366, type: 3}
-  yellChance: 1
+  moneyPrefab: {fileID: 8772656411823552953, guid: 39224ddb666707b458e2f1121f3a768e,
+    type: 3}
+  moneyAmount: 1
   decisionInterval: 0.1
   runawaySpeed: 3
   calmDistance: 25

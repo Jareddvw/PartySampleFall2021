@@ -57,6 +57,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9c79f78d2eb294ab8ad0d19c848be66e, type: 3}
   - {fileID: 8300000, guid: 2c780b9a6f58548d99330293b4ca5b60, type: 3}
   - {fileID: 8300000, guid: 551d869d19a90426bbc9b1806a7a485f, type: 3}
+  explosionVfx: {fileID: 3347913717177612253, guid: 466ce791189184b338047f033fa7dea6,
+    type: 3}
   moneyPrefab: {fileID: 705320191661913830, guid: fc686f6193a134a648aee460ff80e6b2,
     type: 3}
   moneyAmount: 3

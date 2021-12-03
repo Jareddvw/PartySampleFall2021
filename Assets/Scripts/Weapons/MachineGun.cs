@@ -10,7 +10,8 @@ public class MachineGun : Weapon
         if (fireTime <= 0) {
             fireTime = fireRate;
             Debug.Log("pistol shoot");
-            Instantiate(bulletPrefab, start.position, start.rotation);
+            var b = Instantiate(bulletPrefab, start.position, start.rotation);
+            b.GetComponent<Bullet>().cb = cb;
         }
     }
 }

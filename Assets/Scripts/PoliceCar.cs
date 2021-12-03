@@ -7,7 +7,9 @@ public class PoliceCar : MonoBehaviour {
 	public AudioClip[] hitSfx;
 	public AudioClip[] explosionSfx;
 	public GameObject explosionVfx;
+	public GameObject nitro;
 
+	public int nitroAmount;
 	public AudioClip sirenSFX;
 	public AudioSource siren;
 	public HealthScript health;
@@ -43,7 +45,11 @@ public class PoliceCar : MonoBehaviour {
 		if (!health) health = GetComponent<HealthScript>();
 		if (health) {
 			health.onDmgAction += OnHit;
-			health.onDeathAction += (vector3, transform1) => PlayExplosionVfx();
+			health.onDeathAction += (vector3, transform1) => {
+				PlayExplosionVfx();
+				SpawnNitro();
+				DeathCount.CountOne();
+			};
 		}
 		if (crimeManager) crimeManager.onCrimeHappen += UpdateCrime;
 		if (broadcaster == null) broadcaster = GetComponent<CrimeBroadcast>();
@@ -202,5 +208,11 @@ public class PoliceCar : MonoBehaviour {
 		    var explosion = Instantiate(explosionVfx);
 		    explosion.transform.position = transform.position;
 	    }
+    }
+    
+    private void SpawnNitro() {
+	    if (!nitro) return;
+	    var amount = Random.Range(1, nitroAmount + 1);
+	    for(int i=0; i < amount; i++) Instantiate(nitro, transform.position + new Vector3(Random.Range(-2.5f,2.5f), Random.Range(-2.5f, 2.5f), 0), nitro.transform.rotation);
     }
 }

@@ -23,10 +23,10 @@ public class Bullet : MonoBehaviour {
             return;
         if (collision.GetComponent<HealthScript>())
         {
-            cb = FindObjectOfType<CrimeBroadcast>();
-            cb.Broadcast();
+            // cb = FindObjectOfType<CrimeBroadcast>();
+            cb?.Broadcast();
             collision.GetComponent<HealthScript>().OnDamageTaken(damage, transform.forward, transform);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

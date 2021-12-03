@@ -65,11 +65,11 @@ public class BoostManager : MonoBehaviour
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.gameObject.CompareTag("Nitro")) {
+        if (collider.CompareTag("Nitro")) {
             currentBoostAmount += nitroBoostAmount;
-            Destroy(collision.gameObject);
+            Destroy(collider.gameObject);
         }
     }
 

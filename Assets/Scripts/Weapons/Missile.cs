@@ -10,8 +10,9 @@ public class Missile : Weapon
         if (fireTime <= 0)
         {
             fireTime = fireRate;
-            Debug.Log("rocket shoot");
+            // Debug.Log("rocket shoot");
             Instantiate(bulletPrefab, start.position, start.rotation);
+            bulletPrefab.GetComponent<Bullet>().cb = cb;
         }
     }
 }
