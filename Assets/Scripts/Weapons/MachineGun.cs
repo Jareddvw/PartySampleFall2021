@@ -9,9 +9,10 @@ public class MachineGun : Weapon
         fireTime -= Time.deltaTime;
         if (fireTime <= 0) {
             fireTime = fireRate;
-            Debug.Log("pistol shoot");
+            // Debug.Log("pistol shoot");
             var b = Instantiate(bulletPrefab, start.position, start.rotation);
-            b.GetComponent<Bullet>().cb = cb;
+            b.GetComponent<Bullet>().playerTrans = playerTrans;
+            cb?.Broadcast();
         }
     }
 }

@@ -13,7 +13,7 @@ public class Pistol : Weapon
             fireTime = fireRate;
             // Debug.Log("pistol shoot");
             var b = Instantiate(bulletPrefab, start.position, start.rotation);
-            b.GetComponent<Bullet>().cb = cb;
+            b.GetComponent<Bullet>().playerTrans = playerTrans;
         }
     }
 }

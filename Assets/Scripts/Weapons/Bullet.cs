@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    public CrimeBroadcast cb;
+    public Transform playerTrans;
     public float lifetime = 3f;
     public float bulletSpeed = 20f;
     public int damage;
@@ -24,8 +24,8 @@ public class Bullet : MonoBehaviour {
         if (collision.GetComponent<HealthScript>())
         {
             // cb = FindObjectOfType<CrimeBroadcast>();
-            cb?.Broadcast();
-            collision.GetComponent<HealthScript>().OnDamageTaken(damage, transform.forward, transform);
+            // cb?.Broadcast();
+            collision.GetComponent<HealthScript>().OnDamageTaken(damage, transform.forward, playerTrans);
             Destroy(gameObject);
         }
     }

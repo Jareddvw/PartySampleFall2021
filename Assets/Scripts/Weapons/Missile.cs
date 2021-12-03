@@ -11,8 +11,9 @@ public class Missile : Weapon
         {
             fireTime = fireRate;
             // Debug.Log("rocket shoot");
-            Instantiate(bulletPrefab, start.position, start.rotation);
-            bulletPrefab.GetComponent<Bullet>().cb = cb;
+            var b = Instantiate(bulletPrefab, start.position, start.rotation);
+            b.GetComponent<Bullet>().playerTrans = playerTrans;
+            cb?.Broadcast();
         }
     }
 }

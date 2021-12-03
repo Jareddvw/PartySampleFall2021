@@ -7,13 +7,14 @@ public class Weapon : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public CrimeBroadcast cb;
+    public Transform playerTrans;
     public int cost;
     public int damage;
     public float fireRate = 0.2f;
     public float fireTime = 0;
 
     private void Awake() {
-        cb = GetComponentInParent<CrimeBroadcast>();
+        
     }
 
     public virtual void Shoot(Transform start)

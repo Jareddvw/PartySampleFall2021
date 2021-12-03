@@ -12,11 +12,12 @@ public class Shotgun : Weapon
             fireTime = fireRate;
             Debug.Log("shotgun shoot");
             var b = Instantiate(bulletPrefab, start.position, start.rotation);
-            b.GetComponent<Bullet>().cb = cb;
+            b.GetComponent<Bullet>().playerTrans = playerTrans;
             b = Instantiate(bulletPrefab, start.position, start.rotation * Quaternion.Euler(new Vector3(0, 0, -5)));
-            b.GetComponent<Bullet>().cb = cb;
+            b.GetComponent<Bullet>().playerTrans = playerTrans;
             b = Instantiate(bulletPrefab, start.position, start.rotation * Quaternion.Euler(new Vector3(0, 0, +5)));
-            b.GetComponent<Bullet>().cb = cb;
+            b.GetComponent<Bullet>().playerTrans = playerTrans;
+            cb?.Broadcast();
         }
     }
 }
