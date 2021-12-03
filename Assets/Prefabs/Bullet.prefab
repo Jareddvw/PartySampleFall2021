@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTrans: {fileID: 0}
-  lifetime: 1
+  lifetime: 0.5
   bulletSpeed: 20
   damage: 1
   rb: {fileID: 4986410023921805541}

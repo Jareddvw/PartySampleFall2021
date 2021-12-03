@@ -62,6 +62,8 @@ MonoBehaviour:
   moneyPrefab: {fileID: 705320191661913830, guid: fc686f6193a134a648aee460ff80e6b2,
     type: 3}
   moneyAmount: 3
+  dmgColor: {r: 0.3962264, g: 0, b: 0, a: 1}
+  sprite: {fileID: 8857638591117000276}
   health: {fileID: 8857638589607100796}
 --- !u!114 &8857638589607100796
 MonoBehaviour:
@@ -75,9 +77,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20440adf376c7ce4cbc1ca4ab72b1dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 1
+  hp: 220
   dead: 0
-  maxHP: 1
+  maxHP: 220
   destroyOnDeath: 1
   destroyDelay: 0
   destroyRecord: 0

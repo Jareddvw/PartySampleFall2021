@@ -9,6 +9,7 @@ public class MachineGun : Weapon
         fireTime -= Time.deltaTime;
         if (fireTime <= 0) {
             fireTime = fireRate;
+            if (sfx) AudioManager.PlaySFX(sfx, start.position);
             // Debug.Log("pistol shoot");
             var b = Instantiate(bulletPrefab, start.position, start.rotation);
             b.GetComponent<Bullet>().playerTrans = playerTrans;

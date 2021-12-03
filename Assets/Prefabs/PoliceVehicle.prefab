@@ -5288,6 +5288,8 @@ MonoBehaviour:
   chaseDist: 6.5
   stopDist: 25
   detectDist: 15
+  sprite: {fileID: 7762796765498416967}
+  dmgColor: {r: 0.509434, g: 0, b: 0, a: 1}
   dmgMinInterval: 0.5
   minSpeedToDmg: 1
   minSmashDmg: 25

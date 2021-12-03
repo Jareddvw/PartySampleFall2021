@@ -15,7 +15,7 @@ public class DeathCount : MonoBehaviour {
 		get => _count;
 		set {
 			_count = value;
-			if (_count >= intenseLevel) deathEvent?.Invoke();
+			if (_count == intenseLevel) deathEvent?.Invoke();
 			UpdateUI();
 		}
 	}
@@ -25,12 +25,15 @@ public class DeathCount : MonoBehaviour {
 	private void Awake() {
 		instance = this;
 		deathEvent += () => {
-			if (ooberImage) ooberImage.SetActive(true);
+			if (ooberImage) {
+				ooberImage.SetActive(true);
+				ooberImage.GetComponent<OoberScript>().Play();
+			}
 		};
 		UpdateUI();
 	}
 
-	private void UpdateUI() => deathCountUI.text = "Öö# : " + Count;
+	private void UpdateUI() => deathCountUI.text = "Öö " + Count;
 
 	public static void CountOne() {
 		if (!instance) return;

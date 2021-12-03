@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
-{
+public class Weapon : MonoBehaviour {
+    public AudioClip sfx;
     public GameObject bulletPrefab;
     public CrimeBroadcast cb;
     public Transform playerTrans;

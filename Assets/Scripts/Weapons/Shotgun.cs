@@ -10,7 +10,8 @@ public class Shotgun : Weapon
         if (fireTime <= 0)
         {
             fireTime = fireRate;
-            Debug.Log("shotgun shoot");
+            if (sfx) AudioManager.PlaySFX(sfx, start.position);
+            // Debug.Log("shotgun shoot");
             var b = Instantiate(bulletPrefab, start.position, start.rotation);
             b.GetComponent<Bullet>().playerTrans = playerTrans;
             b = Instantiate(bulletPrefab, start.position, start.rotation * Quaternion.Euler(new Vector3(0, 0, -5)));

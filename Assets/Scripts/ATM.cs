@@ -10,12 +10,17 @@ public class ATM : MonoBehaviour {
     public GameObject explosionVfx;
     public GameObject moneyPrefab;
     public int moneyAmount;
+    public Color dmgColor;
+    public SpriteRenderer sprite;
 
     public HealthScript health;
     // Start is called before the first frame update
     private void Awake() {
         health = GetComponent<HealthScript>();
-        health.onDmgAction += (vector3, transform1) => PlayHitSfx();
+        health.onDmgAction += (vector3, transform1) => {
+            UpdateColor();
+            PlayHitSfx();
+        };
         health.onDeathAction += OnHit;
     }
 
@@ -37,5 +42,10 @@ public class ATM : MonoBehaviour {
             var explosion = Instantiate(explosionVfx);
             explosion.transform.position = transform.position;
         }
+    }
+    
+    private void UpdateColor() {
+        if (!sprite) return;
+        sprite.color = Color.Lerp(dmgColor, Color.white, (float) health.hp / health.maxHP);
     }
 }

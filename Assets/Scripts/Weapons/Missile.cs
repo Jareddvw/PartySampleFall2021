@@ -11,6 +11,7 @@ public class Missile : Weapon
         {
             fireTime = fireRate;
             // Debug.Log("rocket shoot");
+            if (sfx) AudioManager.PlaySFX(sfx, start.position);
             var b = Instantiate(bulletPrefab, start.position, start.rotation);
             b.GetComponent<Bullet>().playerTrans = playerTrans;
             cb?.Broadcast();

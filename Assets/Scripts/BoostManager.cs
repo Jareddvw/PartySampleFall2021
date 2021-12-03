@@ -69,6 +69,7 @@ public class BoostManager : MonoBehaviour
     {
         if (collider.CompareTag("Nitro")) {
             currentBoostAmount += nitroBoostAmount;
+            currentBoostAmount = Mathf.Clamp(currentBoostAmount, 0, maxBoostAmount);
             Destroy(collider.gameObject);
         }
     }

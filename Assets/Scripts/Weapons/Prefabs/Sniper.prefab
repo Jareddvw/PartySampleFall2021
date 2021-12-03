@@ -44,9 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5912df5f5e53f5a48b5509aa017d240e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfx: {fileID: 8300000, guid: 4b6987d3fb7fc4bc595c4896fdd460c3, type: 3}
   bulletPrefab: {fileID: 687858453750663252, guid: 43e2a7c02cb2c4c9384a2cda910a2a16,
     type: 3}
+  cb: {fileID: 0}
+  playerTrans: {fileID: 0}
   cost: 0
+  damage: 0
   fireRate: 0.2
   fireTime: 0
   lr: {fileID: -4586149035055785676}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class BasicVehicleInputHandler : MonoBehaviour {
@@ -31,6 +32,10 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 	private void Awake() {
 		_rigidbody = GetComponent<Rigidbody2D>();
 		health = GetComponent<HealthScript>();
+		if (health) health.onDeathAction += (vector3, transform1) => {
+			var scene = SceneManager.GetActiveScene();
+			SceneManager.LoadScene(scene.buildIndex);
+		};
 		if (motor == null) motor = GetComponent<BasicVehicleMotor>();
 		if (comboMeter == null) comboMeter = GetComponent<ComboMeter>();
 		if (broadcaster == null) broadcaster = GetComponent<CrimeBroadcast>();
@@ -79,12 +84,20 @@ public class BasicVehicleInputHandler : MonoBehaviour {
 		var id = health.GetInstanceID();
 		if (_dmgInfo.ContainsKey(id) && (Time.timeSinceLevelLoad - _dmgInfo[id]) < dmgMinInterval) return;
 		_dmgInfo[id] = Time.timeSinceLevelLoad;
-		var contact = other.GetContact(0);
 		// var dir = ((Vector2) transform.position - contact.point).normalized;
 		var dir = -_rigidbody.velocity.normalized;
 		// var vel = _rigidbody.velocity;
-		var vel = contact.relativeVelocity;
-		var spd = Vector3.Dot(vel, dir);
+		var spd = -1f;
+		var vel = Vector2.one;
+		for (int i = 0; i < other.contactCount; i++) {
+			var contact = other.GetContact(i);
+			var v = contact.relativeVelocity;
+			var s = Vector3.Dot(v, dir);
+			if (s > spd) {
+				spd = s;
+				vel = v;
+			}
+		}
 		// var spd = vel.magnitude;
 		// print(other.collider.name + " SPD " + spd.ToString("F3"));
 		// print("RVEL " + vel);

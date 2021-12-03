@@ -12,17 +12,27 @@ public class OoberScript : MonoBehaviour {
 
 	private Image _img;
 	private float _lastTime;
+	private float _playTime;
 	private bool forwards = true;
 
 	private void Awake() {
 		_img = GetComponent<Image>();
 		original = _img.color;
-		Destroy(gameObject, duration + .01f);
+		// Destroy(gameObject, duration + .01f);
+		// _lastTime = Time.time;
+	}
+
+	public void Play() {
 		_lastTime = Time.time;
+		_playTime = _lastTime;
 	}
 
 	private void Update() {
 		var currTime = Time.time;
+		if (currTime - _playTime >= duration) {
+			gameObject.SetActive(false);
+			return;
+		}
 		var past = currTime - _lastTime;
 		if (past > interval) {
 			past -= interval;

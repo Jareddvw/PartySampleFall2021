@@ -24,6 +24,8 @@ public class PoliceCar : MonoBehaviour {
     public float stopDist = 8;
     public float detectDist = 15;
 
+    public SpriteRenderer sprite;
+    public Color dmgColor = Color.red;
     public float dmgMinInterval = .5f;
     public float minSpeedToDmg = 1f;
     public int minSmashDmg = 25;
@@ -33,7 +35,7 @@ public class PoliceCar : MonoBehaviour {
     private bool dustMark;
     private Dictionary<int, float> _dmgInfo = new Dictionary<int, float>();
     private List<int> _tempList = new List<int>();
-
+    
     private Rigidbody2D _rigidbody;
 	private CrimeManager crimeManager;
 	private bool alerted;
@@ -63,6 +65,7 @@ public class PoliceCar : MonoBehaviour {
 			motor.accelerationInput = 0;
 			return;
 		}
+		if (!player) return;
 		Vector3 direction = player.position - transform.position;
 		direction.Normalize();
 		float strInput = Vector3.Dot(direction, transform.right);
@@ -165,26 +168,34 @@ public class PoliceCar : MonoBehaviour {
         broadcaster?.Broadcast();
         */
         
-        if (!other.collider.TryGetComponent<HealthScript>(out var health)) return;
-        // Debug.Log("hit");
-        var id = health.GetInstanceID();
-        if (_dmgInfo.ContainsKey(id) && (Time.timeSinceLevelLoad - _dmgInfo[id]) < dmgMinInterval) return;
-        _dmgInfo[id] = Time.timeSinceLevelLoad;
-        var contact = other.GetContact(0);
-        // var dir = ((Vector2) transform.position - contact.point).normalized;
-        var dir = -_rigidbody.velocity.normalized;
-        // var vel = _rigidbody.velocity;
-        var vel = contact.relativeVelocity;
-        var spd = Vector3.Dot(vel, dir);
-        // var spd = vel.magnitude;
-        // print(other.collider.name + " SPD " + spd.ToString("F3"));
-        // print("RVEL " + vel);
-        // print("DIR " + dir);
-        if (spd < minSpeedToDmg) return;
-        var dmg = Mathf.Lerp(minSmashDmg, maxSmashDmg, (spd - minSpeedToDmg) / (motor.maxBoostSpeed - minSpeedToDmg));
-        // print("DMG " + dmg);
-        health.OnDamageTaken((int) dmg, vel.normalized, transform);
-        broadcaster?.Broadcast();
+	    if (!other.collider.TryGetComponent<HealthScript>(out var health)) return;
+	    // Debug.Log("hit");
+	    var id = health.GetInstanceID();
+	    if (_dmgInfo.ContainsKey(id) && (Time.timeSinceLevelLoad - _dmgInfo[id]) < dmgMinInterval) return;
+	    _dmgInfo[id] = Time.timeSinceLevelLoad;
+	    // var dir = ((Vector2) transform.position - contact.point).normalized;
+	    var dir = -_rigidbody.velocity.normalized;
+	    // var vel = _rigidbody.velocity;
+	    var spd = -1f;
+	    var vel = Vector2.one;
+	    for (int i = 0; i < other.contactCount; i++) {
+		    var contact = other.GetContact(i);
+		    var v = contact.relativeVelocity;
+		    var s = Vector3.Dot(v, dir);
+		    if (s > spd) {
+			    spd = s;
+			    vel = v;
+		    }
+	    }
+	    // var spd = vel.magnitude;
+	    // print(other.collider.name + " SPD " + spd.ToString("F3"));
+	    // print("RVEL " + vel);
+	    // print("DIR " + dir);
+	    if (spd < minSpeedToDmg) return;
+	    var dmg = Mathf.Lerp(minSmashDmg, maxSmashDmg, (spd - minSpeedToDmg) / (motor.maxBoostSpeed - minSpeedToDmg));
+	    // print("DMG " + dmg);
+	    health.OnDamageTaken((int) dmg, vel.normalized, transform);
+	    broadcaster?.Broadcast();
     }
     
     private void OnCollisionEnter2D(Collision2D other) => Hit(other);
@@ -192,8 +203,14 @@ public class PoliceCar : MonoBehaviour {
     private void OnCollisionStay2D(Collision2D other) => Hit(other);
 
     public void OnHit(Vector3 dir, Transform tra) {
+	    UpdateColor();
 	    PlayHitSfx();
 	    UpdateCrime(dir, tra);
+    }
+
+    private void UpdateColor() {
+	    if (!sprite) return;
+	    sprite.color = Color.Lerp(dmgColor, Color.white, (float) health.hp / health.maxHP);
     }
     
     public void PlayHitSfx() {

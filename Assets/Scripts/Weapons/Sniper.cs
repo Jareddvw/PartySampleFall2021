@@ -13,6 +13,7 @@ public class Sniper : Weapon
             lr = GetComponent<LineRenderer>();
             fireTime = fireRate;
             lr.SetPosition(0, start.position);
+            if (sfx) AudioManager.PlaySFX(sfx, start.position);
             // Debug.Log("sniper shoot");
             RaycastHit2D hit = Physics2D.Raycast(start.position, start.forward * 100f);
             if (hit.collider != null)
