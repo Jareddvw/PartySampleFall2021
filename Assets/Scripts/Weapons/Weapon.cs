@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour {
     public CrimeBroadcast cb;
     public Transform playerTrans;
     public int cost;
+    public int ammo;
     public int damage;
     public float fireRate = 0.2f;
     public float fireTime = 0;

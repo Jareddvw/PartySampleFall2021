@@ -7,8 +7,8 @@ public class Shotgun : Weapon
     public override void Shoot(Transform start)
     {
         fireTime -= Time.deltaTime;
-        if (fireTime <= 0)
-        {
+        if (fireTime <= 0 && ammo > 0) {
+            ammo -= 1;
             fireTime = fireRate;
             if (sfx) AudioManager.PlaySFX(sfx, start.position);
             // Debug.Log("shotgun shoot");

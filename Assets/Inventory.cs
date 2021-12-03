@@ -13,6 +13,9 @@ public class Inventory : MonoBehaviour {
     public BasicVehicleMotor basicVehicle;
     public MoneyGrab moneyGrab;
     public Image[] itemUI;
+    public Color[] originalColors;
+    public Color pressedColor = Color.red;
+    public float pressDuration = .5f;
     public List<Item> currentItems;
 
     // Start is called before the first frame update
@@ -20,6 +23,11 @@ public class Inventory : MonoBehaviour {
     {
         basicVehicle = GetComponent<BasicVehicleMotor>();
         moneyGrab = GetComponent<MoneyGrab>();
+        originalColors = new Color[currentItems.Count];
+        for (int i = 0; i < currentItems.Count; i++) {
+            var img = itemUI[i];
+            if (img) originalColors[i] = img.color;
+        }
     }
 
     // Update is called once per frame
@@ -33,12 +41,27 @@ public class Inventory : MonoBehaviour {
             Click(2);        
         else if (Input.GetKeyDown(KeyCode.Alpha4))       
             Click(3);
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+            Click(4);
         
     }
 
-    public void Click(int key)
-    {
-        currentItems[key].OnActivate();    
+    public void Click(int key) {
+        var item = currentItems[key];
+        if (item.canBuy && moneyGrab.CanPayMoney(item.cost)) {
+            moneyGrab.PayMoney(item.cost);
+            StartCoroutine(PressColorChange(key));
+            currentItems[key].OnActivate();
+        }
+    }
+
+    public IEnumerator PressColorChange(int key) {
+        var img = itemUI[key];
+        if (img) {
+            img.color = pressedColor;
+            yield return new WaitForSeconds(pressDuration);
+            img.color = originalColors[key];
+        }
     }
 
     public bool Equip(Item item)

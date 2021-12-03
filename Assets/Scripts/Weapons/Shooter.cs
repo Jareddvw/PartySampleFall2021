@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -17,10 +18,14 @@ public class Shooter : MonoBehaviour
 
     private Vector3 mousePosition;
 
+    private Camera _mainCamera;
+
+    private void Awake() => _mainCamera = Camera.main;
+
     // Update is called once per frame
     void Update()
     {
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
         if (cursor) cursor.position = mousePosition;
         firePoint.up = (mousePosition - firePoint.position).normalized;
@@ -28,10 +33,12 @@ public class Shooter : MonoBehaviour
         if (Input.GetKey(fire)){
             Shoot();
         }
+        /*
         if (Input.GetKey(fire1))
         {
             ShootAlternate();
         }
+        */
     }
 
     void Shoot(){
