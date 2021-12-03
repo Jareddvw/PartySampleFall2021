@@ -33,6 +33,7 @@ public class DeathCount : MonoBehaviour {
 	private void UpdateUI() => deathCountUI.text = "Öö# : " + Count;
 
 	public static void CountOne() {
+		if (!instance) return;
 		instance.Count += 1;
 	}
 }

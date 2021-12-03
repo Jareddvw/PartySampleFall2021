@@ -133,5 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29ede61e9358b4df48eb94fc5d08dd7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTrans: {fileID: 0}
+  lifetime: 1
   bulletSpeed: 20
+  damage: 1
   rb: {fileID: 4986410023921805541}

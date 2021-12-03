@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Inventory : MonoBehaviour
-{
+public class Inventory : MonoBehaviour {
+    public CrimeBroadcast cb;
+    public Transform playerTrans;
     public Shooter shooter;
     public TextMeshProUGUI primary;
     public TextMeshProUGUI secondary;
@@ -64,11 +65,14 @@ public class Inventory : MonoBehaviour
     public void Equip(Weapon wep)
     {
         if (shooter.primaryWeapon == null) {
+            wep.cb = cb;
+            wep.playerTrans = playerTrans;
             shooter.primaryWeapon = wep;
             primary.text = wep.name;
         }
-        else if (shooter.secondaryWeapon == null)
-        {
+        else if (shooter.secondaryWeapon == null) {
+            wep.cb = cb;
+            wep.playerTrans = playerTrans;
             shooter.secondaryWeapon = wep;
             secondary.text = wep.name;
         }

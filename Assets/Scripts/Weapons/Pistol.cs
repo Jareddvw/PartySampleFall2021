@@ -14,6 +14,7 @@ public class Pistol : Weapon
             // Debug.Log("pistol shoot");
             var b = Instantiate(bulletPrefab, start.position, start.rotation);
             b.GetComponent<Bullet>().playerTrans = playerTrans;
+            cb?.Broadcast();
         }
     }
 }
