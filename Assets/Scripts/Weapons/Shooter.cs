@@ -13,7 +13,7 @@ public class Shooter : MonoBehaviour
     public GameObject bulletPrefab;
     public KeyCode fire;
     public KeyCode fire1;
-
+    public float cursorDist = 3.5f;
     public Transform cursor;
 
     private Vector3 mousePosition;
@@ -25,10 +25,14 @@ public class Shooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
+        var selfPos = firePoint.position;
+        mousePosition = selfPos + (mousePosition - selfPos).normalized * cursorDist;
         if (cursor) cursor.position = mousePosition;
         firePoint.up = (mousePosition - firePoint.position).normalized;
+        */
 
         if (Input.GetKey(fire)){
             Shoot();
@@ -39,6 +43,16 @@ public class Shooter : MonoBehaviour
             ShootAlternate();
         }
         */
+    }
+
+    private void FixedUpdate() {
+        mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = -7;
+        var selfPos = firePoint.position;
+        selfPos.z = -7;
+        mousePosition = selfPos + (mousePosition - selfPos).normalized * cursorDist;
+        if (cursor) cursor.position = mousePosition;
+        firePoint.up = (mousePosition - firePoint.position).normalized;
     }
 
     void Shoot(){

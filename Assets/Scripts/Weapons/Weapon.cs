@@ -26,6 +26,7 @@ public class Weapon : MonoBehaviour {
     public void Update()
     {
         // Debug.Log("yeet");
+        if (fireTime > 0) fireTime -= Time.deltaTime;
     }
 
     public void ChangeWeaponDamage(int damage)

@@ -19,6 +19,9 @@ public class RandomWaypoints : MonoBehaviour {
 	public int stopIndex;
 	public int maxUpdates = 20;
 
+	public Sprite[] ppl;
+	public GameObject[] corpses;
+
 	private SimpleWalk[] _walks;
 	private List<Transform> _startPoints = new List<Transform>(50);
 
@@ -26,6 +29,11 @@ public class RandomWaypoints : MonoBehaviour {
 		Application.targetFrameRate = 60;
 		_walks = FindObjectsOfType<SimpleWalk>();
 		foreach (var walk in _walks) {
+			var chance = Random.Range(0, 2);
+			if (chance != 2) {
+				walk.GetComponent<PedestrianAI>().corpse = corpses[chance];
+				walk.GetComponentInChildren<SpriteRenderer>().sprite = ppl[chance];
+			}
 			var num = Random.Range(minWaypoints, maxWaypoints + 1);
 			walk.waypoints = new Transform[num];
 			for (var i = 0; i < num; i++) {
