@@ -19,10 +19,6 @@ public class HealthScript : MonoBehaviour {
         hp = maxHP;
     }
 
-    private void Update() {
-        if (dead && destroyOnDeath && Time.timeSinceLevelLoad - destroyRecord >= destroyDelay) Destroy(gameObject);
-    }
-
     public bool OnDamageTaken(int dmg, Vector2 dir, Transform from) {
         if (dmg < 0 || dead) return false;
         hp -= dmg;
@@ -30,7 +26,8 @@ public class HealthScript : MonoBehaviour {
         if (hp <= 0) {
             onDeathAction?.Invoke(dir, from);
             dead = true;
-            destroyRecord = Time.timeSinceLevelLoad;
+            Destroy(gameObject, destroyDelay);
+            gameObject.SetActive(false);
             return true;
         }
 

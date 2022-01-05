@@ -19,10 +19,13 @@ public class CrimeBroadcast : MonoBehaviour {
 			if (crimeManager) {
 				Vector3 direction = o.transform.position - transform.position;
 				direction.Normalize();
-				float strInput = Vector3.Dot(direction, transform.right);
+				crimeManager.TriggerCrime(direction, transform);
+				/*
+				float strInput = Vector3.Dot(direction, transform.up);
 				if (strInput > 0) {
 					crimeManager.TriggerCrime(direction, transform);
 				}
+				*/
 			}
 		}
 	}

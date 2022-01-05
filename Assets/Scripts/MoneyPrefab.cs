@@ -5,12 +5,12 @@ using UnityEngine;
 public class MoneyPrefab : MonoBehaviour
 {
     public int cashAmount;
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.transform.GetComponent<CollisionManager>())
+        if (collider.CompareTag("Player"))
         {
-            Debug.Log(cashAmount);
-            Destroy(this.gameObject);
+            // Debug.Log(cashAmount);
+            Destroy(gameObject);
         }
     }
 }

@@ -28,7 +28,10 @@ public class SimpleWalk : MonoBehaviour {
 				currentIndex = 0;
 			} else return;
 		}
-		rigidbody.velocity = (currentTarget.position - transform.position).normalized * speed;
+
+		var dir = (currentTarget.position - transform.position).normalized;
+		rigidbody.velocity = dir * speed;
+		// if (dir.sqrMagnitude > .001f) transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
 		if ((transform.position - currentTarget.position).magnitude < 0.1f) {
 			currentIndex += 1;
 			if (currentIndex == waypoints.Length) currentIndex = 0;

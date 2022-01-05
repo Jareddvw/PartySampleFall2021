@@ -65,21 +65,21 @@ public class BoostManager : MonoBehaviour
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.gameObject.CompareTag("Nitro")) {
+        if (collider.CompareTag("Nitro")) {
             currentBoostAmount += nitroBoostAmount;
-            Destroy(collision.gameObject);
+            currentBoostAmount = Mathf.Clamp(currentBoostAmount, 0, maxBoostAmount);
+            Destroy(collider.gameObject);
         }
     }
 
     public IEnumerator boostCooldown(int seconds)
     {
-        fill.color = disabledColor;
         boostRechargeRate = boostRechargeRateDisabled;
         yield return new WaitForSeconds(seconds);
         boostRechargeRate = boostRechargeRateNormal;
-        fill.color = fillColor;
+    
         canBoost = true;
     }
 }

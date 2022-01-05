@@ -4848,10 +4848,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11830b190cc4b43e397791583da5341d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  primaryWeapon: {fileID: 0}
+  secondaryWeapon: {fileID: 0}
   firePoint: {fileID: 800121775}
   bulletPrefab: {fileID: 687858453750663252, guid: 43e2a7c02cb2c4c9384a2cda910a2a16,
     type: 3}
   fire: 323
+  fire1: 0
   cursor: {fileID: 0}
 --- !u!1 &1161302701
 GameObject:
@@ -5287,12 +5290,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd0f02b1bcf64f898f159cf453cc191, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  comboMeter: {fileID: 0}
   dmgMinInterval: 0.5
   minSpeedToDmg: 1
   minSmashDmg: 25
   maxSmashDmg: 140
   dustThreshold: 0.9
+  hitSfx: []
   dustPlayer: {fileID: 606013912}
+  broadcaster: {fileID: 0}
   motor: {fileID: 648992873088106753}
   frame: {fileID: 648992873436088109}
   wheels:
@@ -5329,6 +5335,7 @@ MonoBehaviour:
   trail: {fileID: 0}
   rotation: 0
   isBoosting: 0
+  boostManager: {fileID: 0}
 --- !u!50 &648992873088106754
 Rigidbody2D:
   serializedVersion: 4
@@ -5472,8 +5479,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648992873436088111}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalPosition: {x: 0.01, y: 0, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_Children: []
   m_Father: {fileID: 648992873088106755}
   m_RootOrder: 0
@@ -5517,7 +5524,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 1fb5d6b59dfe240da8b4b59df445cd7c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 39751b994c28d4ce79137ede856d740d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

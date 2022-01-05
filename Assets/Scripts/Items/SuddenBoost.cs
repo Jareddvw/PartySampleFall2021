@@ -5,9 +5,10 @@ using UnityEngine;
 public class SuddenBoost : Item
 {
     public BoostManager BM;
+    public float duration = 10f;
     private float oldBoostDischargeRate;
-    public override void OnActivate()
-    {
+    public override void OnActivate() {
+        canBuy = false;
         BM = GetComponent<BoostManager>();
         oldBoostDischargeRate = BM.boostDischargeRate;
         BM.boostDischargeRate = 0;
@@ -16,7 +17,8 @@ public class SuddenBoost : Item
 
     public IEnumerator Stop()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(duration);
         BM.boostDischargeRate = oldBoostDischargeRate;
+        canBuy = true;
     }
 }
